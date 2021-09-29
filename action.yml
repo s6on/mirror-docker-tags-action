@@ -1,0 +1,25 @@
+name: Mirror docker tags
+description: Mirror docker tags
+inputs:
+  from:
+    description: 'Comma separate docker repositories to mirror the tags from'
+    required: true
+  to:
+    description: 'Docker repositories to mirror the tags into'
+    required: true
+  updateAll:
+    description: 'Update all tags'
+    required: false
+  extra-registry:
+    description: 'Extra registry to mirror the tags into'
+    required: false
+outputs:
+  matrix:
+    description: 'Json matrix'
+runs:
+  using: docker
+  image: Dockerfile
+  args: [ '-from' ,'${{ inputs.from }}' ,
+          '-to' , '${{ inputs.to }}',
+          '-extraRegistry','${{ inputs.extra-registry }}',
+          '-updateAll','${{ inputs.updateAll }}' ]
