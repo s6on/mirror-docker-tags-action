@@ -1,0 +1,40 @@
+name: Docker Image CI
+
+on:
+  schedule:
+    - cron: '4 20 1 * *'
+  push:
+    branches: [ main ]
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log into DockerHub
+        uses: docker/login-action@v1
+        continue-on-error: false
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log into GitHub Container Registry
+        uses: docker/login-action@v1
+        continue-on-error: false
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            s6on/mirror-docker-tags-action:latest
+            s6on/mirror-docker-tags-action:v1.0
+            ghcr.io/s6on/mirror-docker-tags-action:latest
+            ghcr.io/s6on/mirror-docker-tags-action:v1.0
