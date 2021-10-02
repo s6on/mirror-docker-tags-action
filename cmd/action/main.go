@@ -14,11 +14,13 @@ func main() {
 	var from string
 	var to string
 	var extraRegistry string
+	var allowedPs string
 	var updateAll bool
 
 	flag.StringVar(&from, "from", "", "Comma separate docker repositories to mirror the tags from")
 	flag.StringVar(&to, "to", os.Getenv("GITHUB_REPOSITORY_OWNER"), "Docker repositories to mirror the tags into")
 	flag.StringVar(&extraRegistry, "extraRegistry", "", "Extra registry to mirror the tags into")
+	flag.StringVar(&allowedPs, "allowedPlatforms", "", "Comma separate list of allowed Platforms")
 	flag.BoolVar(&updateAll, "updateAll", false, "Update all tags")
 
 	flag.Parse()
@@ -27,7 +29,15 @@ func main() {
 		log.Fatalln("Missing parameter")
 	}
 
-	matrix := srv.Matrix(getRepos(from), to, extraRegistry, updateAll)
+	m := srv.MatrixBuilder{
+		From:             getRepos(from),
+		To:               to,
+		ExtraRegistry:    extraRegistry,
+		UpdateAll:        updateAll,
+		AllowedPlatforms: allowedPlatforms(allowedPs),
+	}
+
+	matrix := m.Get()
 	if len(matrix.Include) == 0 {
 		return
 	}
@@ -57,4 +67,16 @@ func getRepo(rt string) (string, []string) {
 	}
 	repo := strings.ReplaceAll(split[0], ",", "")
 	return repo, strings.Split(split[1], ",")
+}
+
+func allowedPlatforms(platformss string) map[string]bool {
+	platforms := strings.Split(platformss, ",")
+	if len(platforms) == 0 {
+		return nil
+	}
+	ap := make(map[string]bool)
+	for _, platform := range platforms {
+		ap[platform] = true
+	}
+	return ap
 }

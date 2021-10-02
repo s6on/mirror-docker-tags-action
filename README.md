@@ -9,8 +9,11 @@ This action insert a matrix variable that contains all the tags that needs to be
 ## `to`
 **Required** The repository owner to create the new tags (GITHUB_REPOSITORY_OWNER by default). 
 
-## `extraRegistry`
+## `extra-registry`
 **Optional** By default only created tags to docker hub, you can add an extra registry, example `"ghcr.io"`
+
+## `allowed-platforms`
+**Optional** Comma separate list for platforms to return.
 
 ## `updateAll`
 **Optional** Boolean that indicates if all the tags needs to be updated, if false only updates tags that are new or has recently being updated.

@@ -7,42 +7,50 @@ import (
 	"strings"
 )
 
-func Matrix(from map[string][]string, to string, extraRegistry string, updateAll bool) intl.Matrix {
+type MatrixBuilder struct {
+	From             map[string][]string
+	To               string
+	ExtraRegistry    string
+	UpdateAll        bool
+	AllowedPlatforms map[string]bool
+}
+
+func (m *MatrixBuilder) Get() intl.Matrix {
 	parms := make([]intl.Params, 0)
-	for repo, tags := range from {
+	for repo, tags := range m.From {
 		ot := dckr.Get(repo, tags)
-		trn := toRepoName(to, repo)
+		trn := m.toRepoName(repo)
 		var nt []intl.Tag
-		if updateAll {
+		if m.UpdateAll {
 			nt = ot
 		} else {
 			tt := dckr.Get(trn, tags)
 			nt = getTagsToUpdate(ot, tt)
 		}
 		for _, tag := range nt {
-			parms = append(parms, param(tag, repo, trn, extraRegistry))
+			parms = append(parms, m.param(tag, repo, trn))
 		}
 	}
 	return intl.Matrix{Include: parms}
 }
 
-func toRepoName(to string, repo string) string {
-	return to + "/" + strings.ReplaceAll(repo, "/", "-")
+func (m *MatrixBuilder) toRepoName(repo string) string {
+	return m.To + "/" + strings.ReplaceAll(repo, "/", "-")
 }
 
-func param(tag intl.Tag, fromRepo string, toRepo string, extra string) intl.Params {
+func (m *MatrixBuilder) param(tag intl.Tag, fromRepo string, toRepo string) intl.Params {
 	return intl.Params{
 		BaseImg:   fromRepo + ":" + pullTag(tag),
-		Tags:      tags(tag, toRepo, extra),
-		Platforms: platforms(tag)}
+		Tags:      m.tags(tag, toRepo),
+		Platforms: m.platforms(tag)}
 }
 
-func tags(tag intl.Tag, toRepo string, extra string) string {
+func (m *MatrixBuilder) tags(tag intl.Tag, toRepo string) string {
 	t := make([]string, 0)
 	for name := range tag.Names {
 		t = append(t, toRepo+":"+name)
-		if len(extra) > 0 {
-			t = append(t, extra+"/"+toRepo+":"+name)
+		if len(m.ExtraRegistry) > 0 {
+			t = append(t, m.ExtraRegistry+"/"+toRepo+":"+name)
 		}
 	}
 	return strings.Join(t, ",")
@@ -65,10 +73,13 @@ func pullTag(tag intl.Tag) string {
 	return names[0]
 }
 
-func platforms(tag intl.Tag) string {
+func (m *MatrixBuilder) platforms(tag intl.Tag) string {
 	ps := make([]string, 0)
 	for p := range tag.Platforms {
-		ps = append(ps, p.String())
+		pl := p.String()
+		if m.AllowedPlatforms == nil || len(m.AllowedPlatforms) == 0 || m.AllowedPlatforms[pl] {
+			ps = append(ps, pl)
+		}
 	}
 	return strings.Join(ps, ",")
 }

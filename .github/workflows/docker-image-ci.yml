@@ -35,6 +35,6 @@ jobs:
           push: true
           tags: |
             s6on/mirror-docker-tags-action:latest
-            s6on/mirror-docker-tags-action:v1.0
+            s6on/mirror-docker-tags-action:v1.1
             ghcr.io/s6on/mirror-docker-tags-action:latest
-            ghcr.io/s6on/mirror-docker-tags-action:v1.0
+            ghcr.io/s6on/mirror-docker-tags-action:v1.1

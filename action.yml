@@ -10,6 +10,9 @@ inputs:
   updateAll:
     description: 'Update all tags'
     required: false
+  allowed-platforms:
+    description: 'Allowed Platforms'
+    required: false
   extra-registry:
     description: 'Extra registry to mirror the tags into'
     required: false
@@ -22,4 +25,5 @@ runs:
   args: [ '-from' ,'${{ inputs.from }}' ,
           '-to' , '${{ inputs.to }}',
           '-extraRegistry','${{ inputs.extra-registry }}',
+          '-allowedPlatforms','${{ inputs.allowed-platforms }}',
           '-updateAll','${{ inputs.updateAll }}' ]
