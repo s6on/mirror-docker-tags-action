@@ -1,3 +1,3 @@
 module github.com/s6on/mirror-docker-tags-action
 
-go 1.17
+go 1.20

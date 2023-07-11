@@ -1,8 +1,9 @@
 package service
 
 import (
-	intl "github.com/s6on/mirror-docker-tags-action/internal"
 	"testing"
+
+	intl "github.com/s6on/mirror-docker-tags-action/internal"
 )
 
 func Test_platforms(t *testing.T) {

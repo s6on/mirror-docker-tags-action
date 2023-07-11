@@ -1,10 +1,11 @@
 package service
 
 import (
-	intl "github.com/s6on/mirror-docker-tags-action/internal"
-	dckr "github.com/s6on/mirror-docker-tags-action/internal/dockerhub"
 	"sort"
 	"strings"
+
+	intl "github.com/s6on/mirror-docker-tags-action/internal"
+	dckr "github.com/s6on/mirror-docker-tags-action/internal/dockerhub"
 )
 
 type MatrixBuilder struct {
@@ -42,7 +43,8 @@ func (m *MatrixBuilder) param(tag intl.Tag, fromRepo string, toRepo string) intl
 	return intl.Params{
 		BaseImg:   fromRepo + ":" + pullTag(tag),
 		Tags:      m.tags(tag, toRepo),
-		Platforms: m.platforms(tag)}
+		Platforms: m.platforms(tag),
+	}
 }
 
 func (m *MatrixBuilder) tags(tag intl.Tag, toRepo string) string {

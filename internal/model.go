@@ -30,7 +30,8 @@ func (p Platform) String() string {
 		"linux/mips64le",
 		"linux/mips64",
 		"linux/arm/v7",
-		"linux/arm/v6"}[p]
+		"linux/arm/v6",
+	}[p]
 }
 
 type Tag struct {
@@ -47,7 +48,7 @@ type Matrix struct {
 	Include []Params `json:"include"`
 }
 
-type Params struct { //TODO rename
+type Params struct { // TODO rename
 	BaseImg   string `json:"base_img"`
 	Tags      string `json:"tags"`
 	Platforms string `json:"platforms"`

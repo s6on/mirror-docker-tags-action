@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	srv "github.com/s6on/mirror-docker-tags-action/internal/service"
 	"log"
 	"os"
 	"strings"
+
+	srv "github.com/s6on/mirror-docker-tags-action/internal/service"
 )
 
 func main() {

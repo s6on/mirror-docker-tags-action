@@ -23,7 +23,7 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 	if len(data) <= 4 {
 		return nil
 	}
-	vt, err := time.Parse("2006-01-02T15:04:05.000", string(data)[1:24])
+	vt, err := time.Parse("2006-01-02T15:04:05.00", string(data)[1:23])
 	if err == nil {
 		*t = Time(vt)
 	}

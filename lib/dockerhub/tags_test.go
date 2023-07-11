@@ -83,7 +83,7 @@ func TestTime_UnmarshalJSON(t *testing.T) {
 	}{
 		{"Null", "null", Time{}},
 		{"Empty", "", Time{}},
-		{"Parsing", "\"2019-06-08T17:34:35.543678\"", Time(time.Date(2019, time.June, 8, 17, 34, 35, 543000000, time.UTC))},
+		{"Parsing", "\"2019-06-08T17:34:35.543678\"", Time(time.Date(2019, time.June, 8, 17, 34, 35, 540000000, time.UTC))},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

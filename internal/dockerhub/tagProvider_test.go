@@ -1,9 +1,10 @@
 package dockerhub
 
 import (
+	"testing"
+
 	intl "github.com/s6on/mirror-docker-tags-action/internal"
 	dckr "github.com/s6on/mirror-docker-tags-action/lib/dockerhub"
-	"testing"
 )
 
 func TestGet(t *testing.T) {

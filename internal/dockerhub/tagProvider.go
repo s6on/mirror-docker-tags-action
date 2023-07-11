@@ -1,10 +1,11 @@
 package dockerhub
 
 import (
-	intl "github.com/s6on/mirror-docker-tags-action/internal"
-	dckr "github.com/s6on/mirror-docker-tags-action/lib/dockerhub"
 	"log"
 	"time"
+
+	intl "github.com/s6on/mirror-docker-tags-action/internal"
+	dckr "github.com/s6on/mirror-docker-tags-action/lib/dockerhub"
 )
 
 func Get(repo string, tags []string) []intl.Tag {
